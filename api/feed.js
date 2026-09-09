@@ -1,6 +1,9 @@
-export default async function handler(req, res) {
-  const targetUrl = "https://easydrop.one/prom-export?key=00520101781761&pid=80547932074373";
+const http = require('http');
 
+const targetUrl = "https://easydrop.one/prom-export?key=00520101781761&pid=80547932074373";
+const PORT = process.env.PORT || 3000;
+
+const server = http.createServer(async (req, res) => {
   try {
     const response = await fetch(targetUrl, {
       headers: {
@@ -10,14 +13,22 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      return res.status(response.status).send(`Ошибка EasyDrop: ${response.statusText}`);
+      res.writeHead(response.status, { 'Content-Type': 'text/plain; charset=utf-8' });
+      return res.end(`Ошибка EasyDrop: ${response.statusText}`);
     }
 
     const xmlData = await response.text();
-    res.setHeader("Content-Type", "application/xml; charset=utf-8");
-    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-    return res.status(200).send(xmlData);
+    res.writeHead(200, {
+      'Content-Type': 'application/xml; charset=utf-8',
+      'Cache-Control': 'no-store, no-cache, must-revalidate'
+    });
+    res.end(xmlData);
   } catch (error) {
-    return res.status(500).send(`Ошибка прокси: ${error.message}`);
+    res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end(`Ошибка прокси: ${error.message}`);
   }
-}
+});
+
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
