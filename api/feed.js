@@ -5,7 +5,8 @@ const url = require('url');
 const FEEDS = {
   '/feed1': 'https://easydrop.one/prom-export?key=00520101781761&pid=80547932074373',
   '/feed2': 'https://easydrop.one/prom-export?key=70419283037987&pid=80547932074373',
-  '/feed3': 'https://easydrop.one/prom-export?key=11341144510008&pid=80547932074373'
+  '/feed3': 'https://easydrop.one/prom-export?key=11341144510008&pid=80547932074373',
+  '/feed4': 'https://easydrop.one/prom-export?key=20169905339896&pid=80547932074373'
 };
 
 const PORT = process.env.PORT || 3000;
